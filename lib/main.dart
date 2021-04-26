@@ -11,15 +11,10 @@ class MultipleResource extends StatefulWidget {
 class MultipleResourceState extends State<MultipleResource> {
   bool _isJoseph = false;
   bool _isStephen = false;
-  List<Appointment>? _appointments;
-  DataSource? _dataSource;
-  List<Appointment>? _josephAppointments, _stephenAppointments;
-
-  @override
-  void initState() {
-    _dataSource = _getCalendarDataSource();
-    super.initState();
-  }
+  final List<Appointment> _appointments = <Appointment>[];
+  final DataSource _dataSource=DataSource(<Appointment>[]);
+  final List<Appointment> _josephAppointments=<Appointment>[];
+  final List<Appointment> _stephenAppointments=<Appointment>[];
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +33,16 @@ class MultipleResourceState extends State<MultipleResource> {
                         setState(() {
                           if (value) {
                             _updateJosephAppointments();
-                            _dataSource!.appointments!.addAll(_josephAppointments!);
-                            _dataSource!.notifyListeners(
-                                CalendarDataSourceAction.reset, _josephAppointments!);
+                            _dataSource.appointments!.addAll(_josephAppointments);
+                            _dataSource.notifyListeners(
+                                CalendarDataSourceAction.reset, _josephAppointments);
                           } else {
-                            for (int i = 0; i < _josephAppointments!.length; i++) {
-                              _dataSource!.appointments!.remove(_josephAppointments![i]);
+                            for (int i = 0; i < _josephAppointments.length; i++) {
+                              _dataSource.appointments!.remove(_josephAppointments[i]);
                             }
-                            _josephAppointments!.clear();
-                            _dataSource!.notifyListeners(
-                                CalendarDataSourceAction.reset, _josephAppointments!);
+                            _josephAppointments.clear();
+                            _dataSource.notifyListeners(
+                                CalendarDataSourceAction.reset, _josephAppointments);
                           }
                           _isJoseph = value;
                         });
@@ -67,16 +62,16 @@ class MultipleResourceState extends State<MultipleResource> {
                       setState(() {
                         if (value) {
                           _updateStephenAppointments();
-                          _dataSource!.appointments!.addAll(_stephenAppointments!);
-                          _dataSource!.notifyListeners(
-                              CalendarDataSourceAction.reset, _stephenAppointments!);
+                          _dataSource.appointments!.addAll(_stephenAppointments);
+                          _dataSource.notifyListeners(
+                              CalendarDataSourceAction.reset, _stephenAppointments);
                         } else {
-                          for (int i = 0; i < _stephenAppointments!.length; i++) {
-                            _dataSource!.appointments!.remove(_stephenAppointments![i]);
+                          for (int i = 0; i < _stephenAppointments.length; i++) {
+                            _dataSource.appointments!.remove(_stephenAppointments[i]);
                           }
-                          _stephenAppointments!.clear();
-                          _dataSource!.notifyListeners(
-                              CalendarDataSourceAction.reset, _stephenAppointments!);
+                          _stephenAppointments.clear();
+                          _dataSource.notifyListeners(
+                              CalendarDataSourceAction.reset, _stephenAppointments);
                         }
                         _isStephen = value;
                       });
@@ -97,13 +92,7 @@ class MultipleResourceState extends State<MultipleResource> {
     );
   }
 
-  DataSource _getCalendarDataSource() {
-    _appointments = <Appointment>[];
-    return DataSource(_appointments!);
-  }
-
   void _updateJosephAppointments() {
-    _josephAppointments = _josephAppointments ?? <Appointment>[];
     Appointment newAppointment = Appointment(
       startTime: DateTime.now(),
       endTime: DateTime.now().add(Duration(hours: 1)),
@@ -135,15 +124,14 @@ class MultipleResourceState extends State<MultipleResource> {
       subject: 'World Continence Week - Free Check-up Camp for women',
       color: Colors.lightGreen,
     );
-    _josephAppointments!.add(newAppointment);
-    _josephAppointments!.add(newAppointment1);
-    _josephAppointments!.add(newAppointment2);
-    _josephAppointments!.add(newAppointment3);
-    _josephAppointments!.add(newAppointment4);
+    _josephAppointments.add(newAppointment);
+    _josephAppointments.add(newAppointment1);
+    _josephAppointments.add(newAppointment2);
+    _josephAppointments.add(newAppointment3);
+    _josephAppointments.add(newAppointment4);
   }
 
   void _updateStephenAppointments() {
-    _stephenAppointments = _stephenAppointments ?? <Appointment>[];
     Appointment newAppointment5 = Appointment(
       startTime: DateTime.now(),
       endTime: DateTime.now().add(Duration(hours: 1)),
@@ -174,11 +162,11 @@ class MultipleResourceState extends State<MultipleResource> {
       subject: 'World Ostomy Day and Awareness Program',
       color: Colors.lightBlue,
     );
-    _stephenAppointments!.add(newAppointment5);
-    _stephenAppointments!.add(newAppointment6);
-    _stephenAppointments!.add(newAppointment7);
-    _stephenAppointments!.add(newAppointment8);
-    _stephenAppointments!.add(newAppointment9);
+    _stephenAppointments.add(newAppointment5);
+    _stephenAppointments.add(newAppointment6);
+    _stephenAppointments.add(newAppointment7);
+    _stephenAppointments.add(newAppointment8);
+    _stephenAppointments.add(newAppointment9);
   }
 }
 
