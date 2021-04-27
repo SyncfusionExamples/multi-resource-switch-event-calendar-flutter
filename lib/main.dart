@@ -11,15 +11,10 @@ class MultipleResource extends StatefulWidget {
 class MultipleResourceState extends State<MultipleResource> {
   bool _isJoseph = false;
   bool _isStephen = false;
-  List<Appointment> _appointments;
-  DataSource _dataSource;
-  List<Appointment> _josephAppointments, _stephenAppointments;
-
-  @override
-  void initState() {
-    _dataSource = _getCalendarDataSource();
-    super.initState();
-  }
+  final List<Appointment> _appointments = <Appointment>[];
+  final DataSource _dataSource=DataSource(<Appointment>[]);
+  final List<Appointment> _josephAppointments=<Appointment>[];
+  final List<Appointment> _stephenAppointments=<Appointment>[];
 
   @override
   Widget build(BuildContext context) {
@@ -28,82 +23,76 @@ class MultipleResourceState extends State<MultipleResource> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           body: Column(
-        children: <Widget>[
-          SafeArea(
-            child: Row(
-              children: <Widget>[
-                Switch(
-                  value: _isJoseph,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value) {
-                        _updateJosephAppointments();
-                        _dataSource.appointments.addAll(_josephAppointments);
-                        _dataSource.notifyListeners(
-                            CalendarDataSourceAction.reset, _josephAppointments);
-                      } else {
-                        for (int i = 0; i < _josephAppointments.length; i++) {
-                          _dataSource.appointments.remove(_josephAppointments[i]);
-                        }
-                        _josephAppointments.clear();
-                        _dataSource.notifyListeners(
-                            CalendarDataSourceAction.reset, _josephAppointments);
-                      }
-                      _isJoseph = value;
-                    });
-                  },
-                  activeTrackColor: Colors.lightGreenAccent,
-                  activeColor: Colors.green,
-                ),
-                Text('Dr.Joseph (Nephrologist)'),
-              ],
-            ),
-          ),
-          Row(
             children: <Widget>[
-              Switch(
-                value: _isStephen,
-                onChanged: (value) {
-                  setState(() {
-                    if (value) {
-                      _updateStephenAppointments();
-                      _dataSource.appointments.addAll(_stephenAppointments);
-                      _dataSource.notifyListeners(
-                          CalendarDataSourceAction.reset, _stephenAppointments);
-                    } else {
-                      for (int i = 0; i < _stephenAppointments.length; i++) {
-                        _dataSource.appointments.remove(_stephenAppointments[i]);
-                      }
-                      _stephenAppointments.clear();
-                      _dataSource.notifyListeners(
-                          CalendarDataSourceAction.reset, _stephenAppointments);
-                    }
-                    _isStephen = value;
-                  });
-                },
-                activeTrackColor: Colors.lightBlue,
-                activeColor: Colors.blue,
+              SafeArea(
+                child: Row(
+                  children: <Widget>[
+                    Switch(
+                      value: _isJoseph,
+                      onChanged: (value) {
+                        setState(() {
+                          if (value) {
+                            _updateJosephAppointments();
+                            _dataSource.appointments!.addAll(_josephAppointments);
+                            _dataSource.notifyListeners(
+                                CalendarDataSourceAction.reset, _josephAppointments);
+                          } else {
+                            for (int i = 0; i < _josephAppointments.length; i++) {
+                              _dataSource.appointments!.remove(_josephAppointments[i]);
+                            }
+                            _josephAppointments.clear();
+                            _dataSource.notifyListeners(
+                                CalendarDataSourceAction.reset, _josephAppointments);
+                          }
+                          _isJoseph = value;
+                        });
+                      },
+                      activeTrackColor: Colors.lightGreenAccent,
+                      activeColor: Colors.green,
+                    ),
+                    Text('Dr.Joseph (Nephrologist)'),
+                  ],
+                ),
               ),
-              Text('Dr.Stephen (Cardiologist)'),
+              Row(
+                children: <Widget>[
+                  Switch(
+                    value: _isStephen,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value) {
+                          _updateStephenAppointments();
+                          _dataSource.appointments!.addAll(_stephenAppointments);
+                          _dataSource.notifyListeners(
+                              CalendarDataSourceAction.reset, _stephenAppointments);
+                        } else {
+                          for (int i = 0; i < _stephenAppointments.length; i++) {
+                            _dataSource.appointments!.remove(_stephenAppointments[i]);
+                          }
+                          _stephenAppointments.clear();
+                          _dataSource.notifyListeners(
+                              CalendarDataSourceAction.reset, _stephenAppointments);
+                        }
+                        _isStephen = value;
+                      });
+                    },
+                    activeTrackColor: Colors.lightBlue,
+                    activeColor: Colors.blue,
+                  ),
+                  Text('Dr.Stephen (Cardiologist)'),
+                ],
+              ),
+              Expanded(
+                  child: SfCalendar(
+                    view: CalendarView.week,
+                    dataSource: _dataSource,
+                  ))
             ],
-          ),
-          Expanded(
-              child: SfCalendar(
-            view: CalendarView.week,
-            dataSource: _dataSource,
-          ))
-        ],
-      )),
+          )),
     );
   }
 
-  DataSource _getCalendarDataSource() {
-    _appointments = <Appointment>[];
-    return DataSource(_appointments);
-  }
-
   void _updateJosephAppointments() {
-    _josephAppointments = _josephAppointments ?? <Appointment>[];
     Appointment newAppointment = Appointment(
       startTime: DateTime.now(),
       endTime: DateTime.now().add(Duration(hours: 1)),
@@ -114,7 +103,7 @@ class MultipleResourceState extends State<MultipleResource> {
       startTime: DateTime.now().add(Duration(days: -3, hours: 6)),
       endTime: DateTime.now().add(Duration(days: -3, hours: 7)),
       subject:
-          'Billion Hearts Beating brings you Happy Heart Fest to celebrate World Heart Day',
+      'Billion Hearts Beating brings you Happy Heart Fest to celebrate World Heart Day',
       color: Colors.lightGreen,
     );
     Appointment newAppointment2 = Appointment(
@@ -143,7 +132,6 @@ class MultipleResourceState extends State<MultipleResource> {
   }
 
   void _updateStephenAppointments() {
-    _stephenAppointments = _stephenAppointments ?? <Appointment>[];
     Appointment newAppointment5 = Appointment(
       startTime: DateTime.now(),
       endTime: DateTime.now().add(Duration(hours: 1)),
